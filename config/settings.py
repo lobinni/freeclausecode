@@ -157,6 +157,15 @@ class Settings(BaseSettings):
     model_opus: str | None = Field(default=None, validation_alias="MODEL_OPUS")
     model_sonnet: str | None = Field(default=None, validation_alias="MODEL_SONNET")
     model_haiku: str | None = Field(default=None, validation_alias="MODEL_HAIKU")
+    show_free_models_first: bool = Field(
+        default=True, validation_alias="SHOW_FREE_MODELS_FIRST"
+    )
+    only_show_free_models: bool = Field(
+        default=False, validation_alias="ONLY_SHOW_FREE_MODELS"
+    )
+    free_models_list: list[str] | str = Field(
+        default_factory=list, validation_alias="FREE_MODELS_LIST"
+    )
 
     # ==================== Per-Provider Proxy ====================
     nvidia_nim_proxy: str = Field(default="", validation_alias="NVIDIA_NIM_PROXY")
@@ -328,6 +337,13 @@ class Settings(BaseSettings):
     def parse_optional_log_cap(cls, v: Any) -> Any:
         if v == "" or v is None:
             return None
+        return v
+
+    @field_validator("free_models_list", mode="before")
+    @classmethod
+    def _split_free_models(cls, v: str | list[str]) -> list[str]:
+        if isinstance(v, str):
+            return [item.strip() for item in v.split(",") if item.strip()]
         return v
 
     @property

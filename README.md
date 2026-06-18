@@ -354,6 +354,25 @@ Each model tier can use a different provider by setting `MODEL_OPUS`, `MODEL_SON
 
 For example, you can route Opus to `nvidia_nim/moonshotai/kimi-k2.6`, Sonnet to `open_router/openrouter/free`, Haiku to `lmstudio/qwen3.5-coder`, and keep the fallback `MODEL` on `zai/glm-5.1`.
 
+## Environment Variables
+
+All configuration is done via environment variables. See `.env.example` for the full list of available variables with defaults and descriptions.
+
+## Free Model Labeling & Filtering
+
+Three environment variables control free model behavior in the `/v1/models` list:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SHOW_FREE_MODELS_FIRST` | `true` | Free models appear at the top of the list |
+| `ONLY_SHOW_FREE_MODELS` | `false` | Only free models are shown |
+| `FREE_MODELS_LIST` | (empty) | Comma-separated model refs to treat as free |
+
+Free models are auto-detected by suffix (`:free`, `-free`, `/free`) or by presence in `FREE_MODELS_LIST`. 
+Models are displayed with "(free)" appended to their display name.
+
+Configuration is also available in Admin UI → **Model Routing** section.
+
 <a id="connect-your-client"></a>
 
 ## Connect Your Client
